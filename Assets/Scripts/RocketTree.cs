@@ -22,6 +22,25 @@ public class RocketTree : MonoBehaviour
 
     private void ProcessInput()
     {
+        ProcessThrust();
+        ProcessRotate();
+    }
+
+    private void ProcessRotate()
+    {
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            transform.Rotate(Vector3.forward);
+        }
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            transform.Rotate(-Vector3.forward);
+        }
+    }
+
+    private void ProcessThrust()
+    {
+        rigidBody.freezeRotation = true;
         if (Input.GetKey(KeyCode.Space))
         {
             rigidBody.AddRelativeForce(Vector3.up);
@@ -37,13 +56,6 @@ public class RocketTree : MonoBehaviour
                 audioSource.Stop();
             }
         }
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-        {
-            transform.Rotate(Vector3.forward);
-        }
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-        {
-            transform.Rotate(-Vector3.forward);
-        }
+        rigidBody.freezeRotation = false;
     }
 }
