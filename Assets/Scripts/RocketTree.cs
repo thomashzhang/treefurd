@@ -28,6 +28,22 @@ public class RocketTree : MonoBehaviour
         ProcessRotate();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Friendly")
+        {
+
+        }
+        else if (collision.gameObject.tag == "Fuel")
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+
     private void ProcessRotate()
     {
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
