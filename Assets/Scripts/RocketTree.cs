@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RocketTree : MonoBehaviour
 {
@@ -30,17 +31,17 @@ public class RocketTree : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Friendly")
+        if (collision.gameObject.tag == "Finish")
         {
-
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
-        else if (collision.gameObject.tag == "Fuel")
+        else if (collision.gameObject.tag == "Friendly")
         {
 
         }
         else
         {
-
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
