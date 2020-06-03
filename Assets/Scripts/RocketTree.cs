@@ -8,8 +8,14 @@ public class RocketTree : MonoBehaviour
 {
     [SerializeField] float rotationSpeed = 200f;
     [SerializeField] float thrustSpeed = 2000f;
+    [SerializeField] AudioClip winAudioClip;
+    [SerializeField] AudioClip loseAudioClip;
+    [SerializeField] AudioClip mainEngine;
     Rigidbody rigidBody;
     AudioSource audioSource;
+    State state = State.Alive;
+
+    enum State { Alive, Dying, Trancending }
     // Start is called before the first frame update
     void Start()
     {
@@ -25,15 +31,22 @@ public class RocketTree : MonoBehaviour
 
     private void ProcessInput()
     {
-        ProcessThrust();
-        ProcessRotate();
+        if (state == State.Alive)
+        {
+            ProcessThrust();
+            ProcessRotate();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (state != State.Alive)
+        {
+            return;
+        }
         if (collision.gameObject.tag == "Finish")
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            StartSuccessSequence();
         }
         else if (collision.gameObject.tag == "Friendly")
         {
@@ -41,8 +54,34 @@ public class RocketTree : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            StartDeathSequence();
         }
+    }
+
+    private void StartDeathSequence()
+    {
+        state = State.Dying;
+        audioSource.Stop();
+        audioSource.PlayOneShot(loseAudioClip);
+        Invoke(nameof(ReloadCurrentLevel), 1f);
+    }
+
+    private void StartSuccessSequence()
+    {
+        state = State.Trancending;
+        audioSource.Stop();
+        audioSource.PlayOneShot(winAudioClip);
+        Invoke(nameof(LoadNextScene), 1f);
+    }
+
+    private void ReloadCurrentLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void LoadNextScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     private void ProcessRotate()
@@ -65,7 +104,7 @@ public class RocketTree : MonoBehaviour
             rigidBody.AddRelativeForce(Vector3.up * thrustSpeed * Time.deltaTime);
             if (!audioSource.isPlaying)
             {
-                audioSource.Play();
+                audioSource.PlayOneShot(mainEngine);
             }
         }
         else

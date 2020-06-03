@@ -160,6 +160,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 200
   thrustSpeed: 2000
+  winAudioClip: {fileID: 8300000, guid: 0f579092c76764d8e8df04853e9a2c13, type: 3}
+  loseAudioClip: {fileID: 8300000, guid: ceede7a829d41470a86526620500b878, type: 3}
+  mainEngine: {fileID: 8300000, guid: 31ae78c435bc10d4b9b884228142ccf3, type: 3}
 --- !u!1001 &9199202099158229668
 PrefabInstance:
   m_ObjectHideFlags: 0
