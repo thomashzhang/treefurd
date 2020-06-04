@@ -11,6 +11,11 @@ public class RocketTree : MonoBehaviour
     [SerializeField] AudioClip winAudioClip;
     [SerializeField] AudioClip loseAudioClip;
     [SerializeField] AudioClip mainEngine;
+
+    [SerializeField] ParticleSystem winParticles;
+    [SerializeField] ParticleSystem loseParticles;
+    [SerializeField] ParticleSystem mainEngineParticles;
+
     Rigidbody rigidBody;
     AudioSource audioSource;
     State state = State.Alive;
@@ -63,6 +68,7 @@ public class RocketTree : MonoBehaviour
         state = State.Dying;
         audioSource.Stop();
         audioSource.PlayOneShot(loseAudioClip);
+        loseParticles.Play();
         Invoke(nameof(ReloadCurrentLevel), 1f);
     }
 
@@ -71,6 +77,7 @@ public class RocketTree : MonoBehaviour
         state = State.Trancending;
         audioSource.Stop();
         audioSource.PlayOneShot(winAudioClip);
+        winParticles.Play();
         Invoke(nameof(LoadNextScene), 1f);
     }
 
@@ -106,13 +113,12 @@ public class RocketTree : MonoBehaviour
             {
                 audioSource.PlayOneShot(mainEngine);
             }
+            mainEngineParticles.Play();
         }
         else
         {
-            if (audioSource.isPlaying)
-            {
-                audioSource.Stop();
-            }
+            audioSource.Stop();
+            mainEngineParticles.Stop();
         }
         rigidBody.freezeRotation = false;
     }
