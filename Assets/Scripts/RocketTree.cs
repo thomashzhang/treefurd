@@ -16,6 +16,8 @@ public class RocketTree : MonoBehaviour
     [SerializeField] ParticleSystem loseParticles;
     [SerializeField] ParticleSystem mainEngineParticles;
 
+    [SerializeField] float levelLoadDelay = 1f;
+
     Rigidbody rigidBody;
     AudioSource audioSource;
     State state = State.Alive;
@@ -69,7 +71,7 @@ public class RocketTree : MonoBehaviour
         audioSource.Stop();
         audioSource.PlayOneShot(loseAudioClip);
         loseParticles.Play();
-        Invoke(nameof(ReloadCurrentLevel), 1f);
+        Invoke(nameof(ReloadCurrentLevel), levelLoadDelay);
     }
 
     private void StartSuccessSequence()
@@ -78,7 +80,7 @@ public class RocketTree : MonoBehaviour
         audioSource.Stop();
         audioSource.PlayOneShot(winAudioClip);
         winParticles.Play();
-        Invoke(nameof(LoadNextScene), 1f);
+        Invoke(nameof(LoadNextScene), levelLoadDelay);
     }
 
     private void ReloadCurrentLevel()
